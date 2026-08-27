@@ -1,44 +1,78 @@
-file = open("sample_log.txt", "r")
+def analyze_logs(filename):
 
-logs = file.readlines()
+    try:
 
-failed = 0
-success = 0
-warnings = 0
-errors = 0
+        file = open(filename, "r")
 
-for line in logs:
+        logs = file.readlines()
 
-    if "Failed Login" in line:
-        failed += 1
+        file.close()
 
-    elif "Successful Login" in line:
-        success += 1
+        failed = 0
+        success = 0
+        warnings = 0
+        errors = 0
 
-    elif "Warning" in line:
-        warnings += 1
+        for line in logs:
 
-    elif "Error" in line:
-        errors += 1
+            line = line.strip()
+
+            if "Failed Login" in line:
+                failed += 1
+
+            elif "Successful Login" in line:
+                success += 1
+
+            elif "Warning" in line:
+                warnings += 1
+
+            elif "Error" in line:
+                errors += 1
+
+        total_events = failed + success + warnings + errors
+
+        print("\nSOC SECURITY REPORT")
+        print("=" * 40)
+
+        print(f"Failed Logins      : {failed}")
+        print(f"Successful Logins  : {success}")
+        print(f"Warnings           : {warnings}")
+        print(f"Errors             : {errors}")
+
+        print("-" * 40)
+        print(f"Total Events       : {total_events}")
+
+        print("-" * 40)
+
+        if failed >= 5 or errors >= 3:
+            risk_level = "HIGH"
+
+        elif failed >= 3 or errors >= 1:
+            risk_level = "MEDIUM"
+
+        else:
+            risk_level = "LOW"
+
+        print(f"Risk Level         : {risk_level}")
+
+        print("-" * 40)
+
+        if failed >= 5:
+            print("ALERT: Possible Brute Force Attack Detected")
+
+        if errors >= 3:
+            print("ALERT: Multiple System Errors Detected")
+
+        if warnings >= 3:
+            print("ALERT: Unusual Warning Activity Detected")
+
+    except FileNotFoundError:
+
+        print("Error: Log file not found.")
+
+    except Exception as error:
+
+        print("Unexpected Error:", error)
 
 
-print("\n========== SOC REPORT ==========")
-
-print("Failed Logins :", failed)
-print("Successful Logins :", success)
-print("Warnings :", warnings)
-print("Errors :", errors)
-
-print("\n========== RISK ANALYSIS ==========")
-
-if failed >= 5:
-    print("Risk Level : HIGH")
-
-elif failed >= 3:
-    print("Risk Level : MEDIUM")
-
-else:
-    print("Risk Level : LOW")
-
-
-file.close()
+analyze_logs("sample_log.txt")
