@@ -1,12 +1,12 @@
+from datetime import datetime
+
+
 def analyze_logs(filename):
 
     try:
 
-        file = open(filename, "r")
-
-        logs = file.readlines()
-
-        file.close()
+        with open(filename, "r") as file:
+            logs = file.readlines()
 
         failed = 0
         success = 0
@@ -31,19 +31,6 @@ def analyze_logs(filename):
 
         total_events = failed + success + warnings + errors
 
-        print("\nSOC SECURITY REPORT")
-        print("=" * 40)
-
-        print(f"Failed Logins      : {failed}")
-        print(f"Successful Logins  : {success}")
-        print(f"Warnings           : {warnings}")
-        print(f"Errors             : {errors}")
-
-        print("-" * 40)
-        print(f"Total Events       : {total_events}")
-
-        print("-" * 40)
-
         if failed >= 5 or errors >= 3:
             risk_level = "HIGH"
 
@@ -53,9 +40,40 @@ def analyze_logs(filename):
         else:
             risk_level = "LOW"
 
-        print(f"Risk Level         : {risk_level}")
+        current_time = datetime.now()
 
-        print("-" * 40)
+        print("\nSOC SECURITY REPORT")
+        print("=" * 50)
+
+        print("Analysis Time      :", current_time)
+
+        print("=" * 50)
+
+        print("Failed Logins      :", failed)
+        print("Successful Logins  :", success)
+        print("Warnings           :", warnings)
+        print("Errors             :", errors)
+
+        print("-" * 50)
+
+        print("Total Events       :", total_events)
+
+        print("-" * 50)
+
+        print("Risk Level         :", risk_level)
+
+        print("-" * 50)
+
+        if risk_level == "HIGH":
+            print("Recommendation     : Immediate Investigation Required")
+
+        elif risk_level == "MEDIUM":
+            print("Recommendation     : Review Security Logs")
+
+        else:
+            print("Recommendation     : Continue Monitoring")
+
+        print("-" * 50)
 
         if failed >= 5:
             print("ALERT: Possible Brute Force Attack Detected")
@@ -66,9 +84,11 @@ def analyze_logs(filename):
         if warnings >= 3:
             print("ALERT: Unusual Warning Activity Detected")
 
+        print("=" * 50)
+
     except FileNotFoundError:
 
-        print("Error: Log file not found.")
+        print("ERROR: Log file not found.")
 
     except Exception as error:
 
