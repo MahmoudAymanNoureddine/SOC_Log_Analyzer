@@ -4,6 +4,8 @@ Successful Login
 Warning
 Error
 Failed Login
-Successful Login
-Warning
 Failed Login
+Failed Login
+Warning
+Error
+Error
