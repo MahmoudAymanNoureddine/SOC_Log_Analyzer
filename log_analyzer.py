@@ -32,6 +32,14 @@ print("Failed Logins     :", failed)
 print("Successful Logins :", success)
 print("Warnings          :", warnings)
 print("Errors            :", errors)
+if failed >= 5:
+    print("Risk Level : HIGH")
+
+elif failed >= 3:
+    print("Risk Level : MEDIUM")
+
+else:
+    print("Risk Level : LOW")
 
 print("-" * 30)
 print("Total Events      :", total_events)
