@@ -2,6 +2,8 @@ file = open("sample_log.txt", "r")
 
 logs = file.readlines()
 
+file.close()
+
 failed = 0
 success = 0
 warnings = 0
@@ -21,9 +23,21 @@ for line in logs:
     elif "Error" in line:
         errors += 1
 
-print("SOC Report")
-print("-------------------")
-print("Failed Logins :", failed)
+total_events = failed + success + warnings + errors
+
+print("\nSOC Security Report")
+print("=" * 30)
+
+print("Failed Logins     :", failed)
 print("Successful Logins :", success)
-print("Warnings :", warnings)
-print("Errors :", errors)
+print("Warnings          :", warnings)
+print("Errors            :", errors)
+
+print("-" * 30)
+print("Total Events      :", total_events)
+
+if failed >= 5:
+    print("\nALERT: High number of failed login attempts detected!")
+
+if errors >= 3:
+    print("ALERT: Multiple system errors detected!")
