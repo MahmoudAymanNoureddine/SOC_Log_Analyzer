@@ -1,38 +1,29 @@
-def analyze_log(file_name):
+file = open("sample_log.txt", "r")
 
-    failed_logins = 0
-    successful_logins = 0
-    warnings = 0
-    errors = 0
+logs = file.readlines()
 
-    try:
-        with open(file_name, "r") as file:
+failed = 0
+success = 0
+warnings = 0
+errors = 0
 
-            for line in file:
+for line in logs:
 
-                line = line.strip()
+    if "Failed Login" in line:
+        failed += 1
 
-                if line == "FAILED_LOGIN":
-                    failed_logins += 1
+    elif "Successful Login" in line:
+        success += 1
 
-                elif line == "SUCCESS_LOGIN":
-                    successful_logins += 1
+    elif "Warning" in line:
+        warnings += 1
 
-                elif line == "WARNING":
-                    warnings += 1
+    elif "Error" in line:
+        errors += 1
 
-                elif line == "ERROR":
-                    errors += 1
-
-        print("\n========== SOC REPORT ==========")
-
-        print(f"Failed Logins : {failed_logins}")
-        print(f"Success Logins: {successful_logins}")
-        print(f"Warnings      : {warnings}")
-        print(f"Errors        : {errors}")
-
-    except FileNotFoundError:
-        print("Log file not found.")
-
-
-analyze_log("sample_log.txt")
+print("SOC Report")
+print("-------------------")
+print("Failed Logins :", failed)
+print("Successful Logins :", success)
+print("Warnings :", warnings)
+print("Errors :", errors)
